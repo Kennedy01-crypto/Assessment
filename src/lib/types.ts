@@ -5,6 +5,7 @@ export type User = {
   lastName: string
 }
 export type Session = { accessToken: string; refreshToken: string; user: User }
+export type LoginResponse = User & { accessToken: string; refreshToken: string }
 export type Product = {
   id: number
   title: string

@@ -1,4 +1,4 @@
-import type { Category, Product, ProductPage, Session, User } from './types'
+import type { Category, LoginResponse, Product, ProductPage, Session, User } from './types'
 
 const BASE_URL = 'https://dummyjson.com'
 let refreshPromise: Promise<string> | null = null
@@ -68,15 +68,26 @@ export function filterAndPageProducts(
   }
 }
 export const api = {
-  login: (username: string, password: string) =>
-    request<Session>(
+  login: async (username: string, password: string): Promise<Session> => {
+    const response = await request<LoginResponse>(
       '/auth/login',
       {
         method: 'POST',
         body: JSON.stringify({ username, password, expiresInMins: 1 }),
       },
       false,
-    ),
+    )
+    return {
+      accessToken: response.accessToken,
+      refreshToken: response.refreshToken,
+      user: {
+        id: response.id,
+        username: response.username,
+        firstName: response.firstName,
+        lastName: response.lastName,
+      },
+    }
+  },
   categories: () => request<Category[]>('/products/categories'),
   product: (id: string) => request<Product>(`/products/${id}`),
   updateStock: (id: string, stock: number) =>

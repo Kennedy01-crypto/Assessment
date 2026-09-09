@@ -186,11 +186,20 @@ function Protected({ children }: { children: React.ReactNode }) {
       navigate('/login', { replace: true })
     }
   }, [health.isError, navigate])
-  return session ? (
-    <Shell user={health.data ?? session.user}>{children}</Shell>
-  ) : (
-    <Navigate to="/login" replace />
-  )
+  if (!session) return <Navigate to="/login" replace />
+  if (health.isPending || health.isError || !health.data) {
+    return (
+      <Status
+        kind={health.isError ? 'error' : 'loading'}
+        message={
+          health.isError
+            ? 'Your session has expired. Returning to sign in...'
+            : 'Checking your session...'
+        }
+      />
+    )
+  }
+  return <Shell user={health.data}>{children}</Shell>
 }
 
 function ListPage() {
