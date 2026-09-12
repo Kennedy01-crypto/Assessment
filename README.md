@@ -51,7 +51,8 @@ Controls use native semantic elements, labels, keyboard focus rings and 44px tou
 
 ### Vercel deployment
 
-- **Public URL:** _Add the deployed Vercel URL here before submission._
+- **Public URL:**
+  https://assessment-rose-eight.vercel.app/
 - **Production branch:** `main`
 
 The Vercel project is connected directly to the GitHub repository. Vercel builds the Vite application and deploys a new production version automatically when a pull request is merged into `main`. Preview deployments can be enabled for pull requests in Vercel so a reviewer can inspect a change before it is merged.
@@ -64,21 +65,47 @@ The local `.husky/commit-msg` hook runs the same Conventional Commits rules befo
 
 ## Section 4: AI reflection
 
-- **Section 1:** AI was used to pressure-test the initial design against the brief after the first draft, especially the category-plus-search API limitation. The decisions and wording remained mine.
+- **Section 1:** I used Gemini 3.1 Pro (because of its advanced reasoning) to pressure-test the initial design against the brief after the first draft, especially the category-plus-search API limitation. The decisions and wording remained mine.
 - **Section 2:** AI helped scaffold Vite tooling, draft repetitive React markup and suggest focused tests. I reviewed each boundary and adjusted the refresh and optimistic-update behavior.
-- **Section 3:** AI drafted the GitHub Actions structure and commit hook wiring; I chose Vercel and the required blocking checks.
-- **Section 4:** This reflection is written from the actual implementation process, not generated as a generic answer.
+- **Section 3:** I used Github copilot locally on my laptop to draft the GitHub Actions structufor deployment.
+- **Section 4:** This reflection is written from the actual implementation process.
 
-**Tools and workflow:** I used GitHub Copilot in VS Code with a small inspect, implement, build, repair loop. I did not use a separate spec-driven framework.
+**Tools and workflow:**
 
-**Suggestion that improved the work:** Asking for a failure-mode pass over delayed search led to keeping the query parameters in the query key and debouncing only the URL update rather than allowing an old request to own the screen.
+I used GitHub Copilot in VS Code with a small inspect, implement, build, repair loop. I also used AI conversationally (Gemini and Claude) as a sounding board, not as a workflow engine. I did not use a separate spec-driven framework.
 
-**Output I caught:** An initial scaffold attempt placed the project in a nested Windows path and a generated stylesheet replacement left invalid CSS markers. The workspace listing and production build caught both before feature work continued.
+**Suggestion that improved my work:**
 
-**Two decisions made without AI:** I chose URL state as the source of truth because copied links are an explicit user outcome, and I chose inline correction because ward tablets make modal focus and virtual-keyboard behavior needlessly fragile.
+I asked Google Gemini AI to explain why server data, URL state, and local UI state are not the same thing.
 
-**Hardest area to defend:** The custom `request` refresh path is the area I would spend the most live-session time explaining. Its promise mutex prevents duplicate refresh calls, but the underlying public API's refresh-token behavior is still a mock and would need integration tests against the real identity service in production.
+It broke down the three categories: server data as the database truth, URL state as query parameters for navigation, and local UI state as ephemeral component state.
+
+I was able to connect this explanation directly to my endpoints e.g., /products/search?q=phone belongs in URL state, /auth/me is server data, and a dropdown toggle on the product page is local UI state.
+
+**Output I caught:** 
+
+I realised that one generated change had introduced invalid CSS, and I caught it by running the production build before continuing with feature work. That reminded me to validate AI-assisted changes immediately rather than assuming the generated output was safe.
+
+**Two decisions made without AI:**
+
+1. I chose URL state as the source of truth because copied links are an explicit user outcome.
+2. Decided to use PUT /products/:id for updates, I relied on my own REST knowledge rather than asking AI.
+
+**Hardest area to defend:**
+
+My token refresh logic:
+It works, but I don’t have a deep understanding of all the edge cases (e.g., token revocation vs. blacklisting). If pressed, I’d admit it’s heuristic and could be improved with more security input.
 
 ## Time and AI declaration
 
-Record actual time spent here before submission. AI was used for project scaffolding, implementation assistance, test scaffolding, documentation drafting and CI configuration. All submitted behavior was reviewed locally with build, lint, format and test commands.
+TIME SPENT: 36 hours.
+
+AI was used for:
+
+1. Project Scaffolding
+2. Implementation assistance
+3. Test scaffolding
+4. Documentation drafting, and
+5. CI configuration.
+
+All submitted behavior was reviewed locally with build, lint, format and test commands.
