@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { filterAndPageProducts } from './api'
-import { resolveAuthRedirect } from '../App'
+import { resolveAuthRedirect } from './auth'
 import type { Product } from './types'
 
 const products = (['Gauze', 'Tape', 'Gloves', 'Masks'] as const).map((title, index): Product => ({

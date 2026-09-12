@@ -49,7 +49,18 @@ Controls use native semantic elements, labels, keyboard focus rings and 44px tou
 
 ## Section 3: deployment and CI/CD
 
-The GitHub Actions workflow in `.github/workflows/ci.yml` runs format, lint, tests and build on pull requests. It also validates the latest commit message on pushes. A merge to `main` runs the same quality job and then deploys the Vite build through Vercel using `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` repository secrets. Add the final public Vercel URL here after deployment.
+### Vercel deployment
+
+- **Public URL:** _Add the deployed Vercel URL here before submission._
+- **Production branch:** `main`
+
+The Vercel project is connected directly to the GitHub repository. Vercel builds the Vite application and deploys a new production version automatically when a pull request is merged into `main`. Preview deployments can be enabled for pull requests in Vercel so a reviewer can inspect a change before it is merged.
+
+### GitHub Actions quality gate
+
+`.github/workflows/ci.yml` runs for every pull request targeting `main`. It runs `npm ci`, `npm run format:check`, `npm run lint`, `npm run test`, `npm run build`, and commitlint across the complete pull request commit range. A failed formatter check, lint check, test, build, or commit-message check fails the required GitHub check and should block merging through the branch protection settings.
+
+The local `.husky/commit-msg` hook runs the same Conventional Commits rules before a commit is created. The deployment itself is intentionally not duplicated in GitHub Actions: Vercel's repository integration owns the merge-to-production deployment, so no Vercel token or project secrets are needed in GitHub Actions.
 
 ## Section 4: AI reflection
 

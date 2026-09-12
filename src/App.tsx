@@ -22,6 +22,7 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 import { api, clearSession, getSession, saveSession } from './lib/api'
+import { resolveAuthRedirect } from './lib/auth'
 import type { Product, User } from './lib/types'
 import './App.css'
 
@@ -91,12 +92,6 @@ function Shell({ user, children }: { user: User; children: React.ReactNode }) {
       </footer>
     </div>
   )
-}
-
-export function resolveAuthRedirect(candidate?: string | null): string {
-  if (!candidate || candidate === '/login' || candidate.startsWith('/login?')) return '/'
-  if (!candidate.startsWith('/')) return '/'
-  return candidate
 }
 
 function LoginPage() {
