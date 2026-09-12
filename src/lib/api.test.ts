@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { filterAndPageProducts } from './api'
+import { resolveAuthRedirect } from './auth'
 import type { Product } from './types'
 
 const products = (['Gauze', 'Tape', 'Gloves', 'Masks'] as const).map((title, index): Product => ({
@@ -25,5 +26,13 @@ describe('filterAndPageProducts', () => {
     expect(result.total).toBe(4)
     expect(result.skip).toBe(2)
     expect(result.products.map((item) => item.price)).toEqual([8, 12])
+  })
+})
+
+describe('resolveAuthRedirect', () => {
+  it('preserves the user location after an expired session and falls back to home otherwise', () => {
+    expect(resolveAuthRedirect('/items/3?search=gauze')).toBe('/items/3?search=gauze')
+    expect(resolveAuthRedirect('/login')).toBe('/')
+    expect(resolveAuthRedirect('')).toBe('/')
   })
 })

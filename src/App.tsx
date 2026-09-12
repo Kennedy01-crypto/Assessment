@@ -5,6 +5,7 @@ import {
   Navigate,
   Route,
   Routes,
+  useLocation,
   useNavigate,
   useParams,
   useSearchParams,
@@ -21,6 +22,7 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 import { api, clearSession, getSession, saveSession } from './lib/api'
+import { resolveAuthRedirect } from './lib/auth'
 import type { Product, User } from './lib/types'
 import './App.css'
 
@@ -94,14 +96,16 @@ function Shell({ user, children }: { user: User; children: React.ReactNode }) {
 
 function LoginPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [username, setUsername] = useState('emilys')
   const [password, setPassword] = useState('emilyspass')
   const [error, setError] = useState('')
+  const redirectTarget = resolveAuthRedirect(searchParams.get('redirect'))
   const mutation = useMutation({
     mutationFn: () => api.login(username, password),
     onSuccess: (session) => {
       saveSession(session)
-      navigate('/')
+      navigate(redirectTarget, { replace: true })
     },
     onError: () => setError('We could not sign you in. Check your details and try again.'),
   })
@@ -174,6 +178,10 @@ function LoginPage() {
 function Protected({ children }: { children: React.ReactNode }) {
   const session = getSession()
   const navigate = useNavigate()
+  const location = useLocation()
+  const redirectTarget = encodeURIComponent(
+    `${location.pathname}${location.search}${location.hash}` || '/',
+  )
   const health = useQuery({
     queryKey: ['me'],
     queryFn: api.me,
@@ -183,10 +191,10 @@ function Protected({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (health.isError) {
       clearSession()
-      navigate('/login', { replace: true })
+      navigate(`/login?redirect=${redirectTarget}`, { replace: true })
     }
-  }, [health.isError, navigate])
-  if (!session) return <Navigate to="/login" replace />
+  }, [health.isError, navigate, redirectTarget])
+  if (!session) return <Navigate to={`/login?redirect=${redirectTarget}`} replace />
   if (health.isPending || health.isError || !health.data) {
     return (
       <Status
