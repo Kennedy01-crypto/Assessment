@@ -82,7 +82,7 @@ It broke down the three categories: server data as the database truth, URL state
 
 I was able to connect this explanation directly to my endpoints e.g., /products/search?q=phone belongs in URL state, /auth/me is server data, and a dropdown toggle on the product page is local UI state.
 
-**Output I caught:** 
+**Output I caught:**
 
 I realised that one generated change had introduced invalid CSS, and I caught it by running the production build before continuing with feature work. That reminded me to validate AI-assisted changes immediately rather than assuming the generated output was safe.
 
