@@ -53,7 +53,7 @@ Controls use native semantic elements, labels, keyboard focus rings and 44px tou
 
 - **Public URL:**
   https://assessment-rose-eight.vercel.app/
-- **Production branch:** `main`
+- **Production branch:** `master`
 
 The Vercel project is connected directly to the GitHub repository. Vercel builds the Vite application and deploys a new production version automatically when a pull request is merged into `main`. Preview deployments can be enabled for pull requests in Vercel so a reviewer can inspect a change before it is merged.
 

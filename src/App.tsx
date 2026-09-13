@@ -3,6 +3,7 @@ import { LoginPage } from './components/LoginPage'
 import { Protected } from './components/Protected'
 import { DetailPage } from './pages/DetailPage'
 import { ListPage } from './pages/ListPage'
+import { NotFoundPage } from './pages/NotFoundPage'
 import './App.css'
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<ListPage />} />
               <Route path="/items/:id" element={<DetailPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Protected>
         }
