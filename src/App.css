@@ -66,6 +66,22 @@
   margin: 0 auto;
   padding: 60px 5vw 32px;
 }
+.not-found {
+  max-width: 620px;
+  padding: 12vh 0 16vh;
+}
+.not-found h1 {
+  max-width: 520px;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(38px, 7vw, 72px);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+.not-found .lede {
+  max-width: 500px;
+  margin: 20px 0 28px;
+}
 .page-heading {
   display: flex;
   justify-content: space-between;
