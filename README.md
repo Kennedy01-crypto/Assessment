@@ -55,11 +55,11 @@ Controls use native semantic elements, labels, keyboard focus rings and 44px tou
   https://assessment-rose-eight.vercel.app/
 - **Production branch:** `master`
 
-The Vercel project is connected directly to the GitHub repository. Vercel builds the Vite application and deploys a new production version automatically when a pull request is merged into `main`. Preview deployments can be enabled for pull requests in Vercel so a reviewer can inspect a change before it is merged.
+The Vercel project is connected directly to the GitHub repository. Vercel builds the Vite application and deploys a new production version automatically when a pull request is merged into `master`. Preview deployments can be enabled for pull requests in Vercel so a reviewer can inspect a change before it is merged.
 
 ### GitHub Actions quality gate
 
-`.github/workflows/ci.yml` runs for every pull request targeting `main`. It runs `npm ci`, `npm run format:check`, `npm run lint`, `npm run test`, `npm run build`, and commitlint across the complete pull request commit range. A failed formatter check, lint check, test, build, or commit-message check fails the required GitHub check and should block merging through the branch protection settings.
+`.github/workflows/ci.yml` runs for every pull request targeting `master` branch. It runs `npm ci`, `npm run format:check`, `npm run lint`, `npm run test`, `npm run build`, and commitlint across the complete pull request commit range. A failed formatter check, lint check, test, build, or commit-message check fails the required GitHub check and should block merging through the branch protection settings.
 
 The local `.husky/commit-msg` hook runs the same Conventional Commits rules before a commit is created. The deployment itself is intentionally not duplicated in GitHub Actions: Vercel's repository integration owns the merge-to-production deployment, so no Vercel token or project secrets are needed in GitHub Actions.
 
@@ -67,7 +67,7 @@ The local `.husky/commit-msg` hook runs the same Conventional Commits rules befo
 
 - **Section 1:** I used Gemini 3.1 Pro (because of its advanced reasoning) to pressure-test the initial design against the brief after the first draft, especially the category-plus-search API limitation. The decisions and wording remained mine.
 - **Section 2:** AI helped scaffold Vite tooling, draft repetitive React markup and suggest focused tests. I reviewed each boundary and adjusted the refresh and optimistic-update behavior.
-- **Section 3:** I used Github copilot locally on my laptop to draft the GitHub Actions structufor deployment.
+- **Section 3:** I used Github copilot locally on my laptop to draft the GitHub Actions structure for deployment.
 - **Section 4:** This reflection is written from the actual implementation process.
 
 **Tools and workflow:**
